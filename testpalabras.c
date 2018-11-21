@@ -10,8 +10,8 @@
 
 int crearArreglo(char listPalabras[100][16]){
   FILE *archivo;
-  char nombreArchivo[16];
-  printf("Ingrese el nombre del archivo (no mas de 15 caracteres) con .txt al final:\n");
+  char nombreArchivo[50];
+  printf("Ingrese el nombre del archivo con .txt al final:\n");
   scanf("%s",nombreArchivo);
   archivo=fopen(nombreArchivo, "r");
   int i=0;
@@ -31,8 +31,9 @@ int crearArreglo(char listPalabras[100][16]){
 //por la inversa de la primera
 
 void inversa(char p[],char p1[]){
-	int largo = strlen(p);
-	for(int i=0;i<largo;i++){
+	int largo = strlen(p),i=0
+  ;
+	for(i;i<largo;i++){
 		p1[i]=p[largo-1-i];
 	}
 }
@@ -61,8 +62,8 @@ int hayPalabra(char string[], char substring[]){
 // devuelve cuantas veces aparece dicho número en el arreglo.
 
 int hayNumero(int numeros[],int cantidad,int numero){
-	int apariciones=0;
-	for(int i=0;i<cantidad;i++){
+	int apariciones=0,i=0;
+	for(i;i<cantidad;i++){
 		if(numeros[i]==numero){
 			apariciones++;
 		}
@@ -88,8 +89,8 @@ int elegirNumero(int cantidadPalabras){
 //y devuelve la cantidad de veces que aparece la palabra como substring (o como la misma palabra) en la lista
 
 int chequearSubstring(char palabra[],char palabras[][16],int cantPalabras){
-	int apariciones=0;
-	for(int i=0; i<cantPalabras; i++){
+	int apariciones=0,i=0;
+	for(i; i<cantPalabras; i++){
 		if(strlen(palabras[i])>=strlen(palabra)){
 			if(hayPalabra(palabras[i],palabra)){
 				apariciones+=1;
@@ -109,7 +110,8 @@ int chequearSubstring(char palabra[],char palabras[][16],int cantPalabras){
 //pide que escriba por teclado las palabras a agregar, con una longitud no mayor a 15.
 
 void listaPalabras(char palabras[][16],int cantidadPalabras){
-  for(int i=0; i<cantidadPalabras; i++){
+  int i=0;
+  for(i; i<cantidadPalabras; i++){
 	printf("Ingrese una palabra que desea agregar a la lista: ");
     scanf("%s", palabras[i]);
   }
@@ -120,10 +122,11 @@ void listaPalabras(char palabras[][16],int cantidadPalabras){
 //convierte la copia en una lista de las palabras de la primera invertidas
 
 void listaInversas(char palabras[][16],char palabrasInversas[][16],int cantidadPalabras){
-	for(int i=0;i<cantidadPalabras;i++){
+  int i=0;
+	for(i;i<cantidadPalabras;i++){
 		strcpy(palabrasInversas[i],palabras[i]);
 	}
-	for(int i=0;i<cantidadPalabras;i++){
+	for(i;i<cantidadPalabras;i++){
 		inversa(palabras[i],palabrasInversas[i]);
 	}
 }
@@ -134,9 +137,9 @@ void listaInversas(char palabras[][16],char palabrasInversas[][16],int cantidadP
 //requisitos pedidos para la seleccion aleatoria de palabras; caso contrario devuelve 0.
 
 int verificarPalabras(char palabras[][16],char palabrasInversas[][16],char palabrasVerificadas[][16],int cantidadVerificadas,int indice){
-	printf("palabra: %s,%d letras,substring de %d,inversas %d\n",palabras[indice],strlen(palabras[indice]),chequearSubstring(palabras[indice],palabrasVerificadas,cantidadVerificadas),chequearSubstring(palabrasInversas[indice],palabrasVerificadas,cantidadVerificadas));
-	if(strlen(palabras[indice])>4){
-		if(chequearSubstring(palabras[indice],palabrasVerificadas,cantidadVerificadas)==0){
+	printf("palabra: %s,substring de %d,inversas %d\n",palabras[indice],chequearSubstring(palabras[indice],palabrasVerificadas,cantidadVerificadas),chequearSubstring(palabrasInversas[indice],palabrasVerificadas,cantidadVerificadas));
+	if(strlen(palabras[indice])>3){
+		if(chequearSubstring(palabras[indice],palabrasVerificadas,cantidadVerificadas)==1){
 			if(chequearSubstring(palabrasInversas[indice],palabrasVerificadas,cantidadVerificadas)==0){
 				return 1;
 				printf("%s",palabras[indice]);
@@ -156,7 +159,7 @@ int verificarPalabras(char palabras[][16],char palabrasInversas[][16],char palab
 
 int main(){
 	srand(time(NULL));
-	int opcion;
+	int opcion,i=0;
 	printf("Ingrese 1 para ingresar palabras por teclado o 2 para abrir un archivo con una lista de palabras: ");
 	scanf("%d",&opcion);
 	int cantidadPalabras,j=0,n,indiceAleatorio;
@@ -169,38 +172,23 @@ int main(){
 	else{
 		cantidadPalabras=crearArreglo(palabras);
 	}
-	//este for agrega las palabras que cumplen la verificacion a la lista de palabras verificadas
-	//y cuenta la cantidad de palabras que se agregaron
-	//~ for(int i=0;i<cantidadPalabras;i++){
-		//~ if(verificarPalabras(palabras,palabrasInversas,palabrasVerificadas,j,i)==1){
-			//~ strcpy(palabrasVerificadas[j],palabras[i]);
-			//~ j++;
-		//~ }
-	//~ }
-	//char verificadas[j][16];
-	//este for crea una lista final de palabras verificadas con el tamano exacto
-	//para que no quede basura en los espacios vacios al final
-	//~ for(int i=0;i<j;i++){
-		//~ strcpy(verificadas[i],palabrasVerificadas[i]);
-	//~ }
 	//elegimos una cantidad aleatoria de palabras entre 1 y la cantidad de palabras verificadas
 	//y esa sera la cantidad de paabras que se escribiran en el archivo
 	n=elegirNumero(cantidadPalabras);
 	int indices[cantidadPalabras];
-	for(int i=0;i<n;i++){
-		indiceAleatorio=elegirNumero(j)-1;
+	for(i;i<n;i++){
+		indiceAleatorio=elegirNumero(cantidadPalabras)-1;
 		while(hayNumero(indices,n,indiceAleatorio)>0){
-			indiceAleatorio=elegirNumero(j)-1;
+			indiceAleatorio=elegirNumero(cantidadPalabras)-1;
 		}
 		strcpy(seleccion[i],palabras[indiceAleatorio]);
-		//~ if(opcion==1){
-			//~ fputs("\n",fp);
-		//~ }
 		indices[i]=indiceAleatorio;
 	}
+  printf("hola");
 	listaInversas(seleccion,palabrasInversas,cantidadPalabras);
 	char palabrasVerificadas[n][16];
-	for(int i=0;i<n;i++){
+  i=0;
+	for(i;i<n;i++){
 		if(verificarPalabras(seleccion,palabrasInversas,palabrasVerificadas,j,i)==1){
 			strcpy(palabrasVerificadas[j],palabras[i]);
 			j++;
@@ -213,7 +201,8 @@ int main(){
 	scanf("%s",p);
 	fp=fopen(strcat(p,".txt"),"w");
 	//este for agrega n palabras elegidas aleatoriamente de las verificadas al archivo creado
-	for(int i=0;i<j;i++){
+  i=0;
+	for(i;i<j;i++){
 		fputs(palabrasVerificadas[i],fp);
 		if(opcion==1){
 			fputs("\n",fp);
@@ -221,22 +210,5 @@ int main(){
 	}
 	fclose(fp);
 
-// TESTING DE LAS FUNCIONES:
-
-	assert(hayPalabra("hola", "ola")==1);
-	assert(hayPalabra("casa", "las")==0);
-	
-	int l[6]={2, 1, 2, 3, 5, 2},m[5]={1, 2, 3, 4, 5};
-	assert(hayNumero(l, 6, 2)==3);
-	assert(hayNumero(m, 5, 0)==0);
-	
-	char h[4][16]={"ola","hola","hholaa","abc"};
-	assert(chequearSubstring("hola",h,4)==3);
-	assert(chequearSubstring("uno",h,4)==0);
-	
-	char f[4][16]={"alo","aloh","aalohh","cba"},b[][16]={"aloh"};
-	assert(verificarPalabras(h,f,b,4,1)==0);
-	assert(verificarPalabras(h,f,b,4,0)==0);
-	
 	return 0;
 }
